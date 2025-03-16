@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khanh Nam Dinh - Game Developer & Programmer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #00ff8c;
+            --primary-dark: #00cc70;
+            --secondary: #ff3864;
+            --accent: #ffb703;
+            --bg-dark: #0f1923;
+            --bg-light: #192734;
+            --text: #f5f5f5;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            font-family: 'Exo 2', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 140, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 56, 100, 0.06) 0%, transparent 40%);
+            z-index: -1;
+        }
+        
+        header {
+            background-color: rgba(15, 25, 35, 0.95);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 140, 0.5);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            color: var(--text);
+        }
+        
+        .logo::after {
+            content: '<>';
+            position: absolute;
+            right: -2rem;
+            color: var(--secondary);
+            opacity: 0.7;
+            font-size: 0.8em;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links li {
+            list-style: none;
+            margin-left: 2.5rem;
+            position: relative;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 100%;
+        }
+        
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: var(--primary);
+            text-shadow: 0 0 8px rgba(0, 255, 140, 0.5);
+        }
+        
+        main {
+            padding-top: 80px;
+        }
+        
+        section {
+            padding: 4rem 0;
+            display: none;
+        }
+        
+        section.active {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: calc(100vh - 80px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(to bottom right, rgba(0, 255, 140, 0.1), transparent),
+                linear-gradient(to top left, rgba(255, 56, 100, 0.1), transparent);
+            z-index: -1;
+            animation: pulse 8s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero h1 span {
+            display: block;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 255, 140, 0.7);
+            position: relative;
+        }
+        
+        .hero h1 span::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 4px;
+            background-color: var(--secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin-bottom: 3rem;
+            color: #ccc;
+        }
+        
+        .video-container {
+            width: 90%;
+            max-width: 900px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 140, 0.3),
+                0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .video-container:hover {
+            transform: scale(1.02);
+        }
+        
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 255, 140, 0.2), rgba(255, 56, 100, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+        
+        .video-container:hover::before {
+            opacity: 1;
+        }
+        
+        .video-container img,
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            bottom: -15px;
+            left: 0;
+        }
+        
+        .glitch-effect {
+            position: relative;
+        }
+        
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-effect::before {
+            color: var(--secondary);
+            z-index: -1;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translate(-5px, -5px);
+            opacity: 0.8;
+            animation: glitch 2.5s infinite;
+        }
+        
+        .glitch-effect::after {
+            color: var(--accent);
+            z-index: -2;
+            clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+            transform: translate(5px, 5px);
+            opacity: 0.8;
+            animation: glitch 2s infinite reverse;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(-5px, -5px); }
+            25% { transform: translate(-2px, -2px); }
+            50% { transform: translate(5px, 5px); }
+            75% { transform: translate(2px, 2px); }
+            100% { transform: translate(-5px, -5px); }
+        }
+        
+        .about {
+            background-color: var(--bg-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 140, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(255, 56, 100, 0.1) 0%, transparent 30%);
+            z-index: 0;
+        }
+        
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .about-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 140, 0.3),
+                0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transform: rotate(-3deg);
+            transition: all 0.3s ease;
+        }
+        
+        .about-image:hover img {
+            transform: rotate(0deg);
+        }
+        
+        .about-image::before {
+            content: '<coder>';
+            position: absolute;
+            bottom: -20px;
+            right: 10%;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--secondary);
+            opacity: 0.7;
+            font-size: 1.2rem;
+        }
+        
+        .skills {
+            margin-top: 3rem;
+        }
+        
+        .skills h3 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            color: var(--text);
+        }
+        
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .skill-item {
+            background-color: rgba(25, 39, 52, 0.7);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 140, 0.3);
+        }
+        
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .skill-item:hover::before {
+            left: 100%;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .project-card {
+            background-color: var(--bg-light);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(0, 255, 140, 0.5);
+            border-color: var(--primary);
+        }
+        
+        .project-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(15, 25, 35, 0.9));
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+        
+        .project-details {
+            padding: 1.8rem;
+        }
+        
+        .project-details h3 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+        
+        .project-details p {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--bg-dark);
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Exo 2', sans-serif;
+            cursor: pointer;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+        
+        .cta-button:hover {
+            color: var(--text);
+            box-shadow: 0 0 20px rgba(255, 56, 100, 0.5);
+        }
+        
+        .cta-button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        #contact {
+            background-color: var(--bg-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 140, 0.08) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(255, 56, 100, 0.08) 0%, transparent 30%);
+            z-index: 0;
+        }
+        
+        #contact .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        #contact p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+        
+        form {
+            max-width: 700px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-control {
+            width: 100%; 
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(15, 25, 35, 0.7);
+            color: var(--text);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 255, 140, 0.3);
+            outline: none;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        footer {
+            background-color: var(--bg-dark);
+            text-align: center;
+            padding: 3rem 0;
+            position: relative;
+            border-top: 1px solid rgba(0, 255, 140, 0.3);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-link {
+            color: var(--text);
+            font-size: 1.2rem;
+            text-decoration: none;
+            padding: 0.7rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transform: scale(0);
+            transition: transform 0.3s ease;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .social-link:hover {
+            color: var(--bg-dark);
+            transform: translateY(-5px);
+        }
+        
+        .social-link:hover::before {
+            transform: scale(1);
+        }
+        
+        footer p {
+            color: #aaa;
+        }
+        
+        /* Particle animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: rgba(0, 255, 140, 0.5);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 15s infinite linear;
+        }
+        
+        .particle:nth-child(2n) {
+            background-color: rgba(255, 56, 100, 0.5);
+        }
+        
+        .particle:nth-child(3n) {
+            background-color: rgba(255, 183, 3, 0.5);
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .about-image, .about-text {
+                flex: 100%;
+            }
+            
+            .about-image {
+                margin-top: 2rem;
+            }
+            
+            .project-card {
+                grid-column: span 12;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Khanh Nam Dinh</div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="active" onclick="changeTab('home')">Home</a></li>
+                    <li><a href="#about" onclick="changeTab('about')">About</a></li>
+                    <li><a href="#projects" onclick="changeTab('projects')">Projects</a></li>
+                    <li><a href="#contact" onclick="changeTab('contact')">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section id="home" class="active">
+            <div class="hero">
+                <h1>Level Up Your <span data-text="Gaming Experience" class="glitch-effect">Gaming Experience</span></h1>
+                <p>Game Developer & Programmer crafting immersive worlds one pixel at a time</p>
+                <div class="video-container">
+                    <!-- Replace this with your actual video -->
+                    <!-- <img src="/api/placeholder/900/500" alt="Projects showcase video placeholder" /> -->
+                    <!-- For actual video implementation:
+                    -->
+                    <iframe width="900" height="500" src="https://www.youtube.com/embed/0SNyCXJMlU8?si=4uRAlGamqe6ecir1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+        
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title" data-text="About Me">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Welcome to my digital playground! I'm a passionate game developer and programmer with a knack for creating immersive, adrenaline-pumping gaming experiences that push the boundaries of what's possible.</p>
+                        <p>My journey in game development began when I first picked up a controller and thought "I can make something even better than this!" Since then, I've been coding, designing, and bringing virtual worlds to life with relentless energy and creativity.</p>
+                        <p>I specialize in creating games that combine cutting-edge technology with captivating storytelling, ensuring players are not just playing a game, but experiencing an adventure they'll never forget.</p>
+                        
+                        <div class="skills">
+                            <h3>Skills & Power-Ups</h3>
+                            <div class="skill-items">
+                                <div class="skill-item">Unity</div>
+                                <div class="skill-item">Unreal Engine</div>
+                                <div class="skill-item">C#</div>
+                                <div class="skill-item">C++</div>
+                                <div class="skill-item">JavaScript</div>
+                                <div class="skill-item">3D Modeling</div>
+                                <div class="skill-item">Game Design</div>
+                                <div class="skill-item">AI Programming</div>
+                                <div class="skill-item">VR/AR</div>
+                                <div class="skill-item">Shader Programming</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="/api/placeholder/500/500" alt="Your professional headshot">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title" data-text="Featured Projects">Featured Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="/api/placeholder/400/300" alt="Project 1">
+                        </div>
+                        <div class="project-details">
+                            <h3>Cosmic Racer</h3>
+                            <p>A high-octane racing game set in a neon-lit future where gravity is optional and speed is everything. Built with Unity and featuring procedurally generated tracks.</p>
+                            <a href="#" class="cta-button">Play Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="/api/placeholder/400/300" alt="Project 2">
+                        </div>
+                        <div class="project-details">
+                            <h3>Dungeon Architect</h3>
+                            <p>A strategy RPG where you build the dungeon rather than explore it. Features advanced AI opponents and a dynamic economy system that reacts to player decisions.</p>
+                            <a href="#" class="cta-button">View Project</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="/api/placeholder/400/300" alt="Project 3">
+                        </div>
+                        <div class="project-details">
+                            <h3>Pixel Legends</h3>
+                            <p>A retro-styled battle arena game with modern mechanics. Featuring pixel-perfect collision detection and a revolutionary combo system that's easy to learn but difficult to master.</p>
+                            <a href="#" class="cta-button">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title" data-text="Get In Touch">Get In Touch</h2>
+                <p>Ready to bring your game idea to life? Have a question about my projects? Let's team up and create something amazing together!</p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Tell me about your project or question" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#" class="social-link">GH</a>
+                <a href="#" class="social-link">LI</a>
+                <a href="#" class="social-link">TW</a>
+                <a href="#" class="social-link">IT</a>
+            </div>
+            <p>&copy; 2025 Khanh Nam Dinh | Game Developer & Programmer </p>
+        </div>
+    </footer>
+    
+    <script>
+        function changeTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(tabId).classList.add('active');
+            
+            //
